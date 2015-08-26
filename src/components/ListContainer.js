@@ -1,14 +1,19 @@
 var React = require('react');
+var ReactFireMixin = require('reactfire');
 var AddItem = require('./AddItem');
 var List = require('./List');
 var todoStore = require('../stores/todoStore');
 var todoActions = require('../actions/todoActions');
 
 var ListContainer = React.createClass({
+  mixins: [ReactFireMixin],
   getInitialState: function(){
     return {
       list: todoStore.getList()
     }
+  },
+  componentWillMount: function(){
+    this.bindAsArray(new Firebase("https://burning-fire-6749.firebaseio.com/list"), "list");
   },
   componentDidMount: function(){
     todoStore.addChangeListener(this._onChange);
